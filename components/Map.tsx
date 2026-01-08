@@ -7,8 +7,11 @@ import { useEffect } from 'react';
 
 // Fix for default marker icon in react-leaflet
 const fixLeafletIcon = () => {
-  // @ts-ignore
-  delete L.Icon.Default.prototype._getIconUrl;
+  const DefaultIcon = L.Icon.Default.prototype as L.Icon & {
+    _getIconUrl?: string;
+  };
+  delete DefaultIcon._getIconUrl;
+  
   L.Icon.Default.mergeOptions({
     iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
     iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
