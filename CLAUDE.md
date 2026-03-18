@@ -4,11 +4,12 @@ This file provides guidance for AI assistants working on the find-guarana reposi
 
 ## Project Overview
 
-**find-guarana** is a Node.js project in its initial bootstrap stage. The repository currently contains only foundational files (`.gitignore`, `README.md`) and has no source code, dependencies, or build tooling configured yet.
+**find-guarana** is a Guarana locator tool. Its mission: help users find Guarana (a Brazilian soft drink) at nearby stores, restaurants, and vendors.
 
 - **Repository:** TylerGarlick/find-guarana
 - **Primary branch:** `main`
 - **Author:** Tyler Garlick
+- **Mission:** Locate Guarana beverages nearby
 
 ## Repository Structure
 
@@ -16,45 +17,45 @@ This file provides guidance for AI assistants working on the find-guarana reposi
 find-guarana/
 ├── .gitignore       # Comprehensive Node.js gitignore template
 ├── README.md        # Project title only
-└── CLAUDE.md        # This file
+├── CLAUDE.md        # This file
+└── IMPLEMENTATION.md # Implementation plan
 ```
 
-No source code, configuration files, or dependencies exist yet.
-
-## Technology Stack (Anticipated)
-
-Based on the `.gitignore` configuration, this project is set up for:
+## Technology Stack
 
 - **Runtime:** Node.js
-- **Package management:** npm, yarn, or pnpm
-- **Language:** JavaScript/TypeScript (`.tsbuildinfo` ignored)
-- **Bundler:** Likely Vite (Vite timestamp files ignored)
-- **Possible frameworks:** Next.js, Nuxt.js, Gatsby, SvelteKit, or Vitepress patterns are all covered in `.gitignore`
+- **Package management:** npm or pnpm
+- **Language:** JavaScript/TypeScript
+- **Bundler:** Vite
+- **Storage:** SQLite or simple JSON file
+- **APIs:** Places APIs (Google Places, Foursquare) for location search
+
+## Core Features
+
+1. **Location-based search** - Find Guarana at nearby stores/restaurants
+2. **Price comparison** - Compare prices across locations
+3. **Availability alerts** - Get notified when Guarana is in stock nearby
+4. **Favorites** - Save preferred vendors
+5. **Directions** - Open maps for navigation
 
 ## Development Commands
 
-No `package.json` exists yet. Once the project is initialized, update this section with available scripts.
-
-<!-- Example (update when package.json is created):
 ```
 npm install          # Install dependencies
-npm run build        # Build the project
 npm run dev          # Start development server
+npm run build        # Build for production
 npm test             # Run tests
-npm run lint         # Lint the codebase
 ```
--->
 
 ## Git Conventions
 
 - **Default branch:** `main`
-- **Commit style:** Follow conventional commit messages (e.g., `feat:`, `fix:`, `docs:`, `chore:`)
-- **Environment files:** `.env` files are gitignored; use `.env.example` for templates
+- **Commit style:** Follow conventional commit messages (e.g., `feat:`, `fix:`, `docs:`)
+- **Environment:** Use `.env` for API keys (gitignored), `.env.example` for templates
 
-## Key Guidelines for AI Assistants
+## Key Guidelines
 
-1. **This is a new project** — there is no existing code to preserve or maintain backward compatibility with.
-2. **Check for updates** — before making changes, verify the current state of the repo as it may have evolved since this file was written.
-3. **Keep it simple** — avoid over-engineering; add only what is directly needed.
-4. **Environment secrets** — never commit `.env` files or credentials. The `.gitignore` already excludes them.
-5. **Update this file** — when adding build tooling, dependencies, or source code structure, update the relevant sections of this document to keep it current.
+1. Verify all external API calls work (Google Places, Foursquare, etc.)
+2. Test location services on real device or emulator
+3. Handle offline gracefully
+4. Respect API rate limits

@@ -1,32 +1,46 @@
 # Find Guarana - Implementation Plan
 
 ## Purpose
-**AI Research Discovery Tool** - A companion to Abraxas for finding, tracking, and organizing emerging AI safety/alignment research. Supports the AI Research Briefing Service business and Task #75 (Feature Discovery).
+**Guarana Locator** - Find Guarana (Brazilian soft drink) at nearby stores, restaurants, and vendors. Help users discover where to buy their favorite Guarana beverages.
 
 ## Core Features
 
-### Phase 1: Research Discovery
-- [ ] ArXiv API integration for AI safety papers
-- [ ] Paper search by keywords, date range, citations
-- [ ] RSS feed ingestion for key researchers/conferences (NeurIPS, ICML, ICLR)
+### Phase 1: Basic Location Search
+- [ ] User location detection (GPS)
+- [ ] Search nearby stores/convenience stores for Guarana
+- [ ] Display results on simple map or list
+- [ ] Show distance and address
 
-### Phase 2: Tracking & Organization
-- [ ] Save papers to personal library
-- [ ] Tag/categorize by technique (RLHF, Constitutional AI, etc.)
-- [ ] Track implementation status (not started, in research, prototyping, implemented)
+### Phase 2: Details & Interaction
+- [ ] Price information when available
+- [ ] Store hours and availability
+- [ ] Directions link (open in Maps app)
+- [ ] Call store directly
 
-### Phase 3: Integration
-- [ ] Export to Abraxas research format
-- [ ] Weekly digest generation for AI Research Briefing Service
-- [ ] Connect to OpenClaw as a skill for proactive research
+### Phase 3: User Features
+- [ ] Favorites list
+- [ ] Add new locations
+- [ ] Report out of stock
+- [ ] Search history
 
 ## Tech Stack
 - Node.js + TypeScript
 - Vite for bundling
-- Simple SQLite or JSON file storage (no complex DB needed)
-- ArXiv API (free, no auth required)
+- SQLite for local storage
+- Places API (Google Places or Foursquare) for location search
+
+## API Integration
+- Use Places API to search for stores
+- Filter results for convenience stores, supermarkets, beverage stores
+- Cache results to reduce API calls
 
 ## Next Steps
 1. Initialize Node.js project with TypeScript
-2. Add basic paper search via ArXiv API
-3. Create simple CLI or web interface
+2. Set up Places API (get API key)
+3. Create basic location search CLI
+4. Add web interface
+
+## Testing
+- Verify API returns valid results
+- Test on real device with GPS
+- Verify directions link opens maps correctly
