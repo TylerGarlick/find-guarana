@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find Guarana - Location Search</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    h1 {
+      color: #2d3748;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      color: #718096;
+      font-size: 1.1rem;
+    }
+
+    .search-btn {
+      display: block;
+      width: 100%;
+      padding: 15px 30px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      margin-bottom: 20px;
+    }
+
+    .search-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+
+    .search-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .status {
+      padding: 15px;
+      background: #edf2f7;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      color: #4a5568;
+    }
+
+    .results {
+      display: grid;
+      gap: 15px;
+    }
+
+    .store-card {
+      background: #f7fafc;
+      border-radius: 12px;
+      padding: 20px;
+      border-left: 4px solid #667eea;
+      transition: transform 0.2s;
+    }
+
+    .store-card:hover {
+      transform: translateX(5px);
+    }
+
+    .store-name {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 8px;
+    }
+
+    .store-address {
+      color: #718096;
+      margin-bottom: 10px;
+      font-size: 0.95rem;
+    }
+
+    .store-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      font-size: 0.9rem;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: #4a5568;
+    }
+
+    .maps-btn {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 8px 16px;
+      background: #4299e1;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      transition: background 0.2s;
+    }
+
+    .maps-btn:hover {
+      background: #3182ce;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #718096;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      border: 4px solid #e2e8f0;
+      border-top-color: #667eea;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      background: #c6f68d;
+      color: #22543d;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .badge.closed {
+      background: #feb2b2;
+      color: #742a2a;
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 2rem; }
+      .container { padding: 20px; }
+      .store-meta { flex-direction: column; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🥤 Find Guarana</h1>
+      <p class="subtitle">Find Brazilian Guarana soft drinks near you</p>
+    </header>
+
+    <button class="search-btn" id="searchBtn" onclick="searchStores()">
+      🔍 Search Nearby Stores
+    </button>
+
+    <div id="status" class="status" style="display: none;"></div>
+
+    <div id="results" class="results"></div>
+  </div>
+
+  <script>
+    let stores = [];
+
+    async function searchStores() {
+      const btn = document.getElementById('searchBtn');
+      const status = document.getElementById('status');
+      const results = document.getElementById('results');
+
+      btn.disabled = true;
+      btn.textContent = '⏳ Searching...';
+      status.style.display = 'block';
+      status.textContent = '📍 Detecting your location...';
+      results.innerHTML = '<div class="loading"><div class="spinner"></div><p>Finding nearby stores...</p></div>';
+
+      try {
+        // In a real app, this would call the backend API
+        // For now, we'll simulate with mock data
+        await new Promise(resolve => setTimeout(resolve, 1500));
+
+        // Mock stores (in production, this comes from the API)
+        stores = [
+          {
+            id: '1',
+            name: 'Mercado São Paulo',
+            address: 'Rua Venceslau Brás, 163 - Centro, São Paulo',
+            latitude: -23.5489,
+            longitude: -46.6388,
+            distance: 1200,
+            rating: 4.5,
+            isOpen: true,
+            phone: '+55 11 3105-7099',
+            types: ['grocery_or_supermarket', 'food']
+          },
+          {
+            id: '2',
+            name: 'Pão de Açúcar',
+            address: 'Rua Augusta, 2064 - Jardim Paulista',
+            latitude: -23.5589,
+            longitude: -46.6589,
+            distance: 1800,
+            rating: 4.3,
+            isOpen: true,
+            phone: '+55 11 3062-6030',
+            types: ['grocery_or_supermarket', 'food']
+          },
+          {
+            id: '3',
+            name: 'Carrefour Express',
+            address: 'Rua Oscar Freire, 493 - Jardins',
+            latitude: -23.5612,
+            longitude: -46.6678,
+            distance: 2200,
+            rating: 4.0,
+            isOpen: false,
+            phone: '+55 11 3088-1024',
+            types: ['convenience_store', 'grocery_or_supermarket']
+          }
+        ];
+
+        status.textContent = `✅ Found ${stores.length} stores nearby`;
+        renderResults();
+        btn.disabled = false;
+        btn.textContent = '🔍 Search Again';
+      } catch (error) {
+        status.textContent = '❌ Error: ' + error.message;
+        btn.disabled = false;
+        btn.textContent = '🔍 Try Again';
+      }
+    }
+
+    function formatDistance(meters) {
+      if (meters < 1000) {
+        return `${Math.round(meters)}m`;
+      }
+      return `${(meters / 1000).toFixed(1)}km`;
+    }
+
+    function renderResults() {
+      const results = document.getElementById('results');
+      results.innerHTML = '';
+
+      stores.forEach((store, index) => {
+        const card = document.createElement('div');
+        card.className = 'store-card';
+        card.innerHTML = `
+          <div class="store-name">${store.name}</div>
+          <div class="store-address">📍 ${store.address}</div>
+          <div class="store-meta">
+            <span class="meta-item">📏 ${formatDistance(store.distance)} away</span>
+            ${store.rating ? `<span class="meta-item">⭐ ${store.rating}/5</span>` : ''}
+            <span class="meta-item">${store.isOpen ? '<span class="badge">Open</span>' : '<span class="badge closed">Closed</span>'}</span>
+            ${store.phone ? `<span class="meta-item">📞 ${store.phone}</span>` : ''}
+          </div>
+          <a class="maps-btn" href="https://www.google.com/maps/dir/?api=1&destination=${store.latitude},${store.longitude}" target="_blank">
+            🗺️ Get Directions
+          </a>
+        `;
+        results.appendChild(card);
+      });
+    }
+
+    // Auto-search on page load
+    searchStores();
+  </script>
+</body>
+</html>

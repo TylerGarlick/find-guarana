@@ -5,11 +5,15 @@
 
 ## Core Features
 
-### Phase 1: Basic Location Search
-- [ ] User location detection (GPS)
-- [ ] Search nearby stores/convenience stores for Guarana
-- [ ] Display results on simple map or list
-- [ ] Show distance and address
+### Phase 1: Basic Location Search ✅ COMPLETE
+- [x] User location detection (GPS + IP fallback)
+- [x] Search nearby stores/convenience stores for Guarana
+- [x] Display results on simple map or list
+- [x] Show distance and address
+- [x] SQLite caching for results
+- [x] Favorites management
+- [x] Web interface
+- [x] REST API endpoints
 
 ### Phase 2: Details & Interaction
 - [ ] Price information when available
