@@ -150,7 +150,7 @@ export class DatabaseService {
     const rows = stmt.all() as DatabaseStore[];
 
     return rows.map((row) => ({
-      id: row.storeId,
+      id: row.storeId || row.id,
       name: row.name,
       address: row.address,
       latitude: row.latitude,

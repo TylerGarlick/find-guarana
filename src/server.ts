@@ -34,17 +34,24 @@ app.get('/api/search', async (req: Request, res: Response) => {
   try {
     const { lat, lng, radius } = req.query;
     
+    // Helper to extract string from query param (handles string | string[] | ParsedQs)
+    const getStringParam = (param: unknown): string => {
+      if (typeof param === 'string') return param;
+      if (Array.isArray(param)) return param[0];
+      return '';
+    };
+    
     let location;
     if (lat && lng) {
       location = {
-        latitude: parseFloat(lat as string),
-        longitude: parseFloat(lng as string),
+        latitude: parseFloat(getStringParam(lat)),
+        longitude: parseFloat(getStringParam(lng)),
       };
     } else {
       location = await locationService.getCurrentLocation();
     }
 
-    const searchRadius = radius ? parseInt(radius as string) : 5000;
+    const searchRadius = radius ? parseInt(getStringParam(radius)) : 5000;
     const results = await placesService.searchNearbyStores(location, searchRadius);
 
     // Cache results
@@ -136,7 +143,7 @@ app.post('/api/favorites', async (req: Request, res: Response) => {
 app.delete('/api/favorites/:storeId', (req: Request, res: Response) => {
   try {
     const { storeId } = req.params;
-    db.removeFavorite(storeId);
+    db.removeFavorite(storeId as string);
     
     res.json({
       success: true,
